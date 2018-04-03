@@ -1,13 +1,24 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Outputs the time
+
+Parameters:
+    BucketName:
+        Type: String
+    CodeKey:
+        Type: String
+
 Resources:
   TimeFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
       Runtime: nodejs6.10
-      CodeUri: ./
+      CodeUri:
+        # !Ref function allows you to fetch value 
+        # of parameters and other resources at runtime
+        Bucket: !Ref BucketName
+        Key: !Ref CodeKey
       Events:
         MyTimeApi:
           Type: Api
